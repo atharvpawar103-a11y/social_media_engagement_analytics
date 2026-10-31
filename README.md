@@ -5,7 +5,7 @@ A SQL-based data analytics project focused on exploring social media engagement,
 ## Project Dashboard
 
 **Live Website:**  
-https://atharvpawar103-a11y.github.io/social-media-engagement-analytics/
+https://atharvpawar103-a11y.github.io/social_media_engagement_analytics/
 
 ## Tools Used
 
