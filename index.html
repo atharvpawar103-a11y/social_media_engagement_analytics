@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Social Media Engagement Analytics dashboard">
+  <title>Social Media Engagement Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <style>
+    :root{--bg:#0a1020;--panel:#111a2d;--panel2:#151f34;--line:#25324a;--text:#edf3ff;--muted:#91a0bb;--blue:#69a7ff;--cyan:#55d6d0;--purple:#ad91ff;--pink:#ff8fb1;--green:#67d9a5;--orange:#ffbd72;--shadow:0 14px 40px rgba(0,0,0,.18)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 20% -10%,#1a2c50 0,transparent 38%),var(--bg);color:var(--text);font-family:"DM Sans",sans-serif}
+    button,input{font:inherit}.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+    aside{border-right:1px solid var(--line);padding:28px 18px;background:rgba(9,15,29,.82);position:sticky;top:0;height:100vh}
+    .brand{display:flex;gap:12px;align-items:center;padding:0 10px 30px}.brand-mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#5e9eff,#9b83ff);display:grid;place-items:center;font-weight:800;color:#081327;font-family:Manrope}.brand strong{display:block;font:800 14px Manrope}.brand small{color:var(--muted);font-size:11px}
+    .nav-label{font-size:10px;letter-spacing:1.5px;color:#65738f;padding:16px 12px 9px;text-transform:uppercase}.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:12px;color:#9eacc5;text-decoration:none;padding:11px 12px;border-radius:10px;font-size:13px;transition:.2s}.nav a:hover,.nav a.active{background:#1b2943;color:#fff}.nav a.active{box-shadow:inset 3px 0 var(--blue)}.nav .ico{width:18px;text-align:center;font-size:15px}
+    .side-note{position:absolute;bottom:22px;left:18px;right:18px;border:1px solid var(--line);background:#111a2c;border-radius:13px;padding:13px;color:var(--muted);font-size:11px;line-height:1.6}.side-note b{color:#dce8ff;display:block;margin-bottom:4px}
+    main{min-width:0;padding:30px clamp(18px,3vw,44px) 50px;max-width:1600px;width:100%;margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:30px}.eyebrow{color:var(--cyan);font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase}.top-actions{display:flex;align-items:center;gap:10px}.status{border:1px solid #285746;color:#8ee4bc;background:#10291f;border-radius:20px;padding:7px 11px;font-size:11px}.date-label{font-size:11px;color:var(--muted)}
+    h1,h2,h3,p{margin-top:0}h1{font:800 clamp(27px,3vw,39px) Manrope;letter-spacing:-1.4px;margin:10px 0 9px}.subtitle{color:var(--muted);font-size:14px;line-height:1.6;max-width:720px;margin-bottom:26px}.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin:34px 0 15px}.section-head h2{font:700 18px Manrope;margin:0}.section-head p{color:var(--muted);font-size:12px;margin:5px 0 0}.section-kicker{color:var(--blue);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+    .grid{display:grid;gap:15px}.kpis{grid-template-columns:repeat(4,minmax(0,1fr))}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card{background:linear-gradient(145deg,rgba(21,31,52,.97),rgba(15,24,42,.97));border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow);min-width:0}.kpi{position:relative;overflow:hidden;min-height:124px}.kpi:after{content:"";position:absolute;width:90px;height:90px;border-radius:50%;right:-35px;top:-35px;background:var(--glow);opacity:.1}.kpi-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}.kpi-icon{width:30px;height:30px;border-radius:9px;background:var(--glow);display:grid;place-items:center;color:#091326;font-weight:800}.kpi-value{font:800 27px Manrope;margin:14px 0 3px}.kpi-foot{color:var(--muted);font-size:10px}.chart-card{min-height:315px}.card-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:15px}.card-title h3{font:700 13px Manrope;margin:0 0 5px}.card-title p{color:var(--muted);font-size:10px;margin:0}.tag{border:1px solid #30405c;color:#aebbd1;padding:5px 8px;border-radius:20px;font-size:9px;white-space:nowrap}.chart-wrap{height:235px;position:relative}.chart-wrap.tall{height:270px}.table-wrap{overflow:auto;max-height:340px}table{width:100%;border-collapse:collapse;font-size:11px;white-space:nowrap}th{text-align:left;color:#8192ae;font-size:10px;text-transform:uppercase;letter-spacing:.7px;font-weight:600;padding:10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#151f34}td{padding:10px;border-bottom:1px solid rgba(44,59,83,.55);color:#dce5f5}tr:hover td{background:rgba(105,167,255,.05)}.rank{color:var(--cyan);font-weight:700}.search{background:#0d1628;border:1px solid var(--line);border-radius:9px;padding:8px 10px;color:var(--text);font-size:11px;outline:none;width:190px}.search:focus{border-color:var(--blue)}.data-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.note{border:1px solid #5d4b2e;background:#241d13;color:#e6c997;border-radius:12px;padding:12px 14px;font-size:11px;line-height:1.6;margin-top:22px}.footer{border-top:1px solid var(--line);margin-top:42px;padding-top:18px;color:#74839e;font-size:10px;display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.empty{color:var(--muted);font-size:12px;padding:20px;text-align:center}
+    @media(max-width:1050px){.app{grid-template-columns:205px minmax(0,1fr)}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:720px){.app{display:block}aside{height:auto;position:relative;padding:14px 14px 10px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding:0 5px 12px}.nav-label,.side-note{display:none}.nav{display:flex;overflow-x:auto;padding-bottom:3px}.nav a{white-space:nowrap;padding:9px 11px;font-size:11px}.nav a.active{box-shadow:inset 0 -2px var(--blue)}main{padding:22px 14px 35px}.topbar{margin-bottom:22px}.date-label{display:none}.two,.three{grid-template-columns:1fr}.kpis{gap:10px}.kpi{padding:14px;min-height:112px}.kpi-value{font-size:23px}.card{padding:14px}.chart-card{min-height:295px}.chart-wrap{height:220px}.section-head{margin-top:28px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <div class="brand"><div class="brand-mark">SA</div><div><strong>Social Analytics</strong><small>Engagement intelligence</small></div></div>
+    <div class="nav-label">Workspace</div>
+    <nav class="nav">
+      <a class="active" href="#overview"><span class="ico">▦</span>Overview</a>
+      <a href="#audience"><span class="ico">◉</span>Audience</a>
+      <a href="#content"><span class="ico">◇</span>Content & hashtags</a>
+      <a href="#timing"><span class="ico">◷</span>Posting patterns</a>
+      <a href="#explorer"><span class="ico">☷</span>Data explorer</a>
+    </nav>
+    <div class="side-note"><b>Project dataset</b>SQL analysis outputs<br>Interactive dashboard<br><span style="color:#68d8a6">●</span> CSV-powered</div>
+  </aside>
+  <main>
+    <div class="topbar"><div class="eyebrow">Social media intelligence / 2026</div><div class="top-actions"><span class="status">● Dashboard loaded</span><span class="date-label">Interactive analytics workspace</span></div></div>
+    <section id="overview">
+      <div class="section-kicker">Performance overview</div>
+      <h1>See what moves engagement.</h1>
+      <p class="subtitle">Explore user activity, audience engagement, hashtag performance and posting behaviour across the supplied SQL analysis outputs.</p>
+      <div class="grid kpis">
+        <div class="card kpi" style="--glow:var(--blue)"><div class="kpi-top">Engagement records <span class="kpi-icon">◎</span></div><div class="kpi-value" id="kpi-records">—</div><div class="kpi-foot">Rows in engagement activity file</div></div>
+        <div class="card kpi" style="--glow:var(--cyan)"><div class="kpi-top">Total interactions <span class="kpi-icon">↗</span></div><div class="kpi-value" id="kpi-interactions">—</div><div class="kpi-foot">Likes + comments in supplied file</div></div>
+        <div class="card kpi" style="--glow:var(--purple)"><div class="kpi-top">Peak posting hour <span class="kpi-icon">◷</span></div><div class="kpi-value" id="kpi-hour">—</div><div class="kpi-foot" id="kpi-hour-foot">Based on hourly post counts</div></div>
+        <div class="card kpi" style="--glow:var(--pink)"><div class="kpi-top">Top posting day <span class="kpi-icon">✦</span></div><div class="kpi-value" id="kpi-day">—</div><div class="kpi-foot" id="kpi-day-foot">Based on daily post counts</div></div>
+      </div>
+      <div class="section-head"><div><div class="section-kicker">Activity snapshot</div><h2>How activity is distributed</h2><p>Compare the leading users and the weekly posting rhythm.</p></div></div>
+      <div class="grid two">
+        <div class="card chart-card"><div class="card-title"><div><h3>Most active users</h3><p>Post and comment activity combined</p></div><span class="tag">TOP 10</span></div><div class="chart-wrap"><canvas id="usersChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Posting activity by day</h3><p>Total posts recorded for each weekday</p></div><span class="tag">WEEKLY</span></div><div class="chart-wrap"><canvas id="daysChart"></canvas></div></div>
+      </div>
+    </section>
+
+    <section id="audience">
+      <div class="section-head"><div><div class="section-kicker">Audience intelligence</div><h2>Who is engaging?</h2><p>User-level and country-level engagement outputs.</p></div></div>
+      <div class="grid two">
+        <div class="card chart-card"><div class="card-title"><div><h3>Most liked users</h3><p>Users ranked by total likes</p></div><span class="tag">TOP 10</span></div><div class="chart-wrap"><canvas id="likedChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Average engagement by country</h3><p>Average likes per post, as supplied</p></div><span class="tag">COUNTRY</span></div><div class="chart-wrap"><canvas id="avgCountryChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Top countries by followers</h3><p>Follower counts from the country output</p></div><span class="tag">TOP 5</span></div><div class="chart-wrap"><canvas id="followersChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Top influencers</h3><p>Influencer scores in the supplied result</p></div><span class="tag">TOP 5</span></div><div class="chart-wrap"><canvas id="influencersChart"></canvas></div></div>
+      </div>
+      <div class="section-head"><div><div class="section-kicker">Country leaderboard</div><h2>Country engagement ranking</h2><p>Values are displayed as present in the SQL output; rank is not recalculated.</p></div></div>
+      <div class="card"><div class="table-wrap"><table id="countryTable"><thead></thead><tbody></tbody></table></div></div>
+      <div class="section-head"><div><div class="section-kicker">Community health</div><h2>Inactive users to review</h2><p>Users appearing in the supplied inactive-user query output.</p></div></div>
+      <div class="card"><div class="table-wrap"><table id="inactiveTable"><thead></thead><tbody></tbody></table></div></div>
+    </section>
+
+    <section id="content">
+      <div class="section-head"><div><div class="section-kicker">Content intelligence</div><h2>Hashtags and engagement signals</h2><p>Understand which tags appear most often and which have higher interaction totals.</p></div></div>
+      <div class="grid two">
+        <div class="card chart-card"><div class="card-title"><div><h3>Trending hashtags by usage</h3><p>Hashtag frequency from the query output</p></div><span class="tag">USAGE</span></div><div class="chart-wrap"><canvas id="hashtagChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Hashtag engagement</h3><p>Likes + comments metric as supplied</p></div><span class="tag">INTERACTIONS</span></div><div class="chart-wrap"><canvas id="hashtagEngagementChart"></canvas></div></div>
+      </div>
+    </section>
+
+    <section id="timing">
+      <div class="section-head"><div><div class="section-kicker">Publishing strategy</div><h2>When does the audience post?</h2><p>Hourly and weekday patterns from the supplied dataset.</p></div></div>
+      <div class="grid two">
+        <div class="card chart-card"><div class="card-title"><div><h3>Posts by hour</h3><p>24-hour distribution; times shown in 24-hour format</p></div><span class="tag">HOURLY</span></div><div class="chart-wrap tall"><canvas id="hourChart"></canvas></div></div>
+        <div class="card chart-card"><div class="card-title"><div><h3>Weekly posting rhythm</h3><p>Posts per weekday</p></div><span class="tag">WEEKLY</span></div><div class="chart-wrap tall"><canvas id="dayLineChart"></canvas></div></div>
+      </div>
+    </section>
+
+    <section id="explorer">
+      <div class="section-head"><div><div class="section-kicker">Raw SQL outputs</div><h2>Data explorer</h2><p>Search and inspect the source CSV rows used by this dashboard.</p></div></div>
+      <div class="card">
+        <div class="data-toolbar"><input id="tableSearch" class="search" type="search" placeholder="Search rows..."><select id="datasetSelect" class="search" aria-label="Choose dataset"></select><span class="tag" id="rowCount">Loading datasets…</span></div>
+        <div class="table-wrap"><table id="dataTable"><thead></thead><tbody></tbody></table></div>
+      </div>
+    </section>
+    <div class="note"><b>Data note:</b> This project uses the supplied SQL output files. The dataset is synthetic/AI-generated, not live social-platform data. Metrics retain the source files' labels and values; this dashboard does not independently validate the underlying SQL logic or infer missing records.</div>
+    <div class="footer"><span>Social Media Engagement Analytics · Student project</span><span>Built as a static site for GitHub Pages</span></div>
+  </main>
+</div>
+<script>
+const FILES = {
+  activity: ["Engagment_activity_all.csv","Engagement activity"],
+  engagementRate: ["engagement_rate.csv","Engagement rate by user"],
+  users: ["top_ten_users.csv","Top active users"],
+  liked: ["post_liked.csv","Most liked users"],
+  country: ["country_engagement_leaderboard.csv","Country engagement leaderboard"],
+  followers: ["top_countries_followers.csv","Top countries by followers"],
+  avgCountry: ["average_engagement_by_country.csv","Average engagement by country"],
+  hashtags: ["trending_hashtags.csv","Trending hashtags"],
+  hashtagEngagement: ["hashtag_engagement.csv","Hashtag engagement"],
+  influencers: ["top_influencers.csv","Top influencers"],
+  hours: ["posting_hour.csv","Posting by hour"],
+  days: ["posting_by_day.csv","Posting by day"],
+  inactive: ["inactive_users.csv","Inactive users"]
+};
+const datasets = {};
+const charts = {};
+const $ = id => document.getElementById(id);
+function parseCSV(text){
+  const rows=[]; let row=[], cell="", quoted=false;
+  for(let i=0;i<text.length;i++){const c=text[i],n=text[i+1];
+    if(c==='"'&&quoted&&n==='"'){cell+='"';i++}
+    else if(c==='"'){quoted=!quoted}
+    else if(c===','&&!quoted){row.push(cell);cell=""}
+    else if((c==='\n'||c==='\r')&&!quoted){if(c==='\r'&&n==='\n')i++;row.push(cell);if(row.some(v=>v!==""))rows.push(row);row=[];cell=""}
+    else cell+=c;
+  }
+  if(cell.length||row.length){row.push(cell);rows.push(row)}
+  const headers=(rows.shift()||[]).map(x=>x.trim());
+  return rows.map(r=>Object.fromEntries(headers.map((h,i)=>[h,(r[i]??"").trim()])));
+}
+function num(v){const x=Number(v);return Number.isFinite(x)?x:0}
+function get(rows,key){return rows.map(r=>r[key])}
+function chart(id,type,labels,values,label,color="#69a7ff",horizontal=false){
+  if(charts[id])charts[id].destroy();
+  const ctx=$(id);if(!ctx)return;
+  charts[id]=new Chart(ctx,{type,data:{labels,datasets:[{label,data:values,backgroundColor:type==="line"?"rgba(105,167,255,.12)":values.map((_,i)=>[color,"#55d6d0","#ad91ff","#ff8fb1","#67d9a5","#ffbd72"][i%6]),borderColor:color,borderWidth:type==="line"?2:0,borderRadius:6,fill:type==="line",tension:.35,pointRadius:type==="line"?3:0}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:horizontal?"y":"x",plugins:{legend:{display:false},tooltip:{backgroundColor:"#101a2c",titleColor:"#fff",bodyColor:"#dce7fa",borderColor:"#354563",borderWidth:1}},scales:{x:{grid:{color:"rgba(130,150,180,.08)"},ticks:{color:"#91a0bb",font:{size:10}}},y:{beginAtZero:true,grid:{color:"rgba(130,150,180,.08)"},ticks:{color:"#91a0bb",font:{size:10}}}}}});
+}
+function renderTable(id,rows,limit=100){
+ const table=$(id);if(!table)return;const head=table.querySelector("thead"),body=table.querySelector("tbody");
+ if(!rows?.length){head.innerHTML="";body.innerHTML='<tr><td class="empty">No rows available.</td></tr>';return}
+ const keys=Object.keys(rows[0]);head.innerHTML="<tr>"+keys.map(k=>`<th>${esc(k.replaceAll("_"," "))}</th>`).join("")+"</tr>";
+ body.innerHTML=rows.slice(0,limit).map((r,i)=>"<tr>"+keys.map((k,j)=>`<td>${j===0?`<span class="rank">${esc(r[k])}</span>`:esc(r[k])}</td>`).join("")+"</tr>").join("");
+}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function loadChartData(){
+ const u=datasets.users||[],days=datasets.days||[],hours=datasets.hours||[];
+ chart("usersChart","bar",get(u,"username"),u.map(r=>num(r.Total_activity)),"Activity","#69a7ff",true);
+ chart("daysChart","bar",get(days,"Post_Day"),days.map(r=>num(r.Total_Post_Per_Day)),"Posts","#55d6d0");
+ chart("likedChart","bar",get(datasets.liked||[],"username"),(datasets.liked||[]).map(r=>num(r.Total_likes)),"Likes","#ad91ff",true);
+ chart("avgCountryChart","bar",get(datasets.avgCountry||[],"country"),(datasets.avgCountry||[]).map(r=>num(r.Avg_engagement)),"Average likes/post","#55d6d0",true);
+ chart("followersChart","bar",get(datasets.followers||[],"country"),(datasets.followers||[]).map(r=>num(r.No_of_followers)),"Followers","#69a7ff");
+ chart("influencersChart","bar",get(datasets.influencers||[],"username"),(datasets.influencers||[]).map(r=>num(r.top_infuencers)),"Score","#ad91ff",true);
+ chart("hashtagChart","bar",get(datasets.hashtags||[],"tag_name"),(datasets.hashtags||[]).map(r=>num(r.No_Hashtags)),"Uses","#55d6d0",true);
+ chart("hashtagEngagementChart","bar",get(datasets.hashtagEngagement||[],"tag_name"),(datasets.hashtagEngagement||[]).map(r=>num(r.Engagment_No)),"Engagement","#ff8fb1",true);
+ const sortedHours=[...(hours)].sort((a,b)=>num(a.Posting_Hour)-num(b.Posting_Hour));
+ chart("hourChart","line",sortedHours.map(r=>String(r.Posting_Hour).padStart(2,"0")+":00"),sortedHours.map(r=>num(r.Total_Posts)),"Posts","#69a7ff");
+ chart("dayLineChart","line",get(days,"Post_Day"),days.map(r=>num(r.Total_Post_Per_Day)),"Posts","#55d6d0");
+ const totalInteractions=(datasets.activity||[]).reduce((s,r)=>s+num(r.Total_likes_comments),0);
+ $("kpi-records").textContent=(datasets.activity||[]).length.toLocaleString("en-IN");
+ $("kpi-interactions").textContent=totalInteractions.toLocaleString("en-IN");
+ const peak=[...hours].sort((a,b)=>num(b.Total_Posts)-num(a.Total_Posts))[0];
+ if(peak){$("kpi-hour").textContent=String(peak.Posting_Hour).padStart(2,"0")+":00";$("kpi-hour-foot").textContent=`${peak.Total_Posts} posts in the peak hour`;}
+ const topDay=[...days].sort((a,b)=>num(b.Total_Post_Per_Day)-num(a.Total_Post_Per_Day))[0];
+ if(topDay){$("kpi-day").textContent=topDay.Post_Day;$("kpi-day-foot").textContent=`${topDay.Total_Post_Per_Day} posts recorded`;}
+ renderTable("countryTable",datasets.country||[]);
+ renderTable("inactiveTable",datasets.inactive||[]);
+}
+function setupExplorer(){
+ const select=$("datasetSelect");
+ Object.entries(FILES).forEach(([key,[file,label]])=>{const o=document.createElement("option");o.value=key;o.textContent=label;select.appendChild(o)});
+ function refresh(){const rows=datasets[select.value]||[],q=$("tableSearch").value.toLowerCase();const filtered=rows.filter(r=>Object.values(r).some(v=>String(v).toLowerCase().includes(q)));renderTable("dataTable",filtered,500);$("rowCount").textContent=`${filtered.length.toLocaleString("en-IN")} / ${rows.length.toLocaleString("en-IN")} rows`;}
+ select.addEventListener("change",refresh);$("tableSearch").addEventListener("input",refresh);refresh();
+}
+async function init(){
+ const results=await Promise.all(Object.entries(FILES).map(async([key,[file]])=>{
+   try{const res=await fetch("./data/"+encodeURIComponent(file));if(!res.ok)throw new Error("HTTP "+res.status);datasets[key]=parseCSV(await res.text());}
+   catch(e){datasets[key]=[];console.error("Could not load "+file,e);}
+ }));
+ loadChartData();setupExplorer();
+ const missing=Object.entries(FILES).filter(([k])=>!datasets[k]?.length);
+ if(missing.length){const note=document.querySelector(".note");note.innerHTML+="<br><b>File loading warning:</b> Some CSV files could not be loaded. Check that the complete <code>data</code> folder was uploaded with the site: "+missing.map(x=>esc(x[1][0])).join(", ");}
+}
+init();
+document.querySelectorAll(".nav a").forEach(a=>a.addEventListener("click",()=>{document.querySelectorAll(".nav a").forEach(x=>x.classList.remove("active"));a.classList.add("active")}));
+</script>
+</body>
+</html>
